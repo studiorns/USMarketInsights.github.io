@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USA Travel Queries Forecast Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+        .insights {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .highlight {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>USA Travel Queries Forecast Visualization</h1>
+        
+        <div class="chart-container">
+            <canvas id="forecastChart"></canvas>
+        </div>
+        
+        <div class="insights">
+            <h2>Key Insights</h2>
+            <p>This visualization compares the 2024 actual values with the four forecast scenarios for 2025:</p>
+            <ul>
+                <li><strong>Conservative Scenario:</strong> 8.7% average year-over-year growth</li>
+                <li><strong>Moderate Scenario:</strong> 18.4% average year-over-year growth</li>
+                <li><strong>Ambitious Scenario:</strong> 28.1% average year-over-year growth</li>
+                <li><strong>ARIMA Forecast:</strong> 14.1% average year-over-year growth</li>
+            </ul>
+            
+            <div class="highlight">
+                <h3>July and October Analysis</h3>
+                <p>The factor-based forecasts show exceptionally high growth for July and October, while the ARIMA forecast suggests decreases for these months:</p>
+                <ul>
+                    <li><strong>July:</strong> Factor-based models project 42.8% to 68.3% growth, while ARIMA projects a 33.5% decrease</li>
+                    <li><strong>October:</strong> Factor-based models project 54.0% to 81.5% growth, while ARIMA projects a 24.1% decrease</li>
+                </ul>
+                <p>This divergence suggests that the 2024 values for these months may be anomalies or outliers from a statistical perspective.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        const actual2024 = [51.17, 45.16, 52.90, 44.29, 48.27, 57.25, 98.08, 59.57, 59.17, 86.02, 58.28, 63.31];
+        const conservative2025 = [57.31, 38.36, 50.82, 38.82, 45.85, 56.10, 140.10, 63.75, 63.25, 132.45, 63.55, 69.95];
+        const moderate2025 = [62.43, 41.78, 55.35, 42.28, 49.95, 61.10, 152.60, 69.45, 68.90, 144.30, 69.20, 76.20];
+        const ambitious2025 = [67.54, 45.21, 59.89, 45.74, 54.05, 66.10, 165.10, 75.15, 74.55, 156.15, 74.85, 82.45];
+        const arima2025 = [65.21, 65.27, 65.27, 65.27, 65.27, 65.27, 65.27, 65.27, 65.27, 65.27, 65.27, 65.27];
+        
+        // Create chart
+        const ctx = document.getElementById('forecastChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: '2024 Actual',
+                        data: actual2024,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Conservative 2025',
+                        data: conservative2025,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Moderate 2025',
+                        data: moderate2025,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Ambitious 2025',
+                        data: ambitious2025,
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'ARIMA 2025',
+                        data: arima2025,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Indexed Queries'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'USA Travel Queries Forecast Comparison',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.parsed.y.toFixed(2);
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
