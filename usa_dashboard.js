@@ -1,7 +1,7 @@
 // USA Market Data
 const usaData = {
     impressions: {
-        '2023': [36223039, 22710424, 26585741, 94821697, 34254665, 50394282, 32824623, 42355584, 76347143, 220587460, 102105506, 62525945],
+        '2023': [35486294, 43678134, 45030267, 1979755, 21315101, 12594394, 15767985, 59680086, 36407106, 42001599, 109097095, 99438328],
         '2024': [36223039, 22710424, 26585741, 94821697, 34254665, 50394282, 32824623, 42355584, 76347143, 220587460, 102105506, 62525945],
         '2025': [63978106, 49228327, 49228327, 77105600, 65605413, 42605038, 42605038, 42605038, 8104476, 14182833, 76176494, 65642535]
     },
@@ -150,7 +150,7 @@ function initCharts() {
                     fill: false
                 },
                 {
-                    label: '2025 Moderate (+29.9%)',
+                    label: '2025 Moderate',
                     data: usaData.travelQueries['2025']['moderate'],
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.1)',
@@ -508,21 +508,8 @@ function updateQueriesChart(scenario) {
             fill: false
         });
         
-        let growthLabel = '';
-        switch(scenario) {
-            case 'conservative':
-                growthLabel = ' (+25.3%)';
-                break;
-            case 'moderate':
-                growthLabel = ' (+29.9%)';
-                break;
-            case 'ambitious':
-                growthLabel = ' (+34.5%)';
-                break;
-        }
-        
         queriesChart.data.datasets.push({
-            label: `2025 ${scenario.charAt(0).toUpperCase() + scenario.slice(1)}${growthLabel}`,
+            label: `2025 ${scenario.charAt(0).toUpperCase() + scenario.slice(1)}`,
             data: usaData.travelQueries['2025'][scenario],
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.1)',
